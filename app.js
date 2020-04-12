@@ -1,6 +1,28 @@
 // BUDGET CONTROLLER
 var budgetController = (function() {
+    
+    var Expense = function(type, desc, value) {
+        this.type = type;
+        this.description = desc;
+        this.value = value;
+    }
 
+    var Income = function(type, desc, value) {
+        this.type = type;
+        this.description = desc;
+        this.value = value;
+    }
+
+    var data = {
+        allItems: {
+            exp: [],
+            inc: []
+        },
+        totals = {
+            exp: 0,
+            inc: 0
+        }
+    };
 
 
 })();
@@ -9,7 +31,6 @@ var budgetController = (function() {
 
 // UI CONTROLLER
 var UIController = (function() {
-
     var DOMstrings = {
         inputType: '.add__type',
         inputDescription: '.add__description',
