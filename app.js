@@ -116,7 +116,9 @@ var UIController = (function() {
         incomeContainer: '.income__list',
         expensesContainer: '.expenses__list',
         incomeTotal: '.budget__income--value',
-        expensesTotal: '.budget__expenses--value'
+        expensesTotal: '.budget__expenses--value',
+        expensesPercentage: '.budget__expenses--percentage',
+        budgetValue: '.budget__value'
     }
 
     return {
@@ -134,9 +136,11 @@ var UIController = (function() {
 
             if (type === 'inc') {
                 element = document.querySelector(DOMstrings.incomeContainer);
+
                 html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">+ %value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
             } else if (type === 'exp') {
                 element = document.querySelector(DOMstrings.expensesContainer);
+
                 html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">- %value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
             }
 
@@ -159,15 +163,17 @@ var UIController = (function() {
             fields[0].focus();
         },
 
-        /*
-        updateTotal: function(value, type) {
-            if (type === 'inc') {
-                document.querySelector(DOMstrings.incomeTotal).textContent = '+ ' + value;
-            } else if (type === 'exp') {
-                document.querySelector(DOMstrings.expensesTotal).textContent = '- ' + value;
+        displayBudget: function(obj) {
+            
+            document.querySelector(DOMstrings.budgetValue).textContent = obj.budget;
+            document.querySelector(DOMstrings.incomeTotal).textContent = '+ ' + obj.totalInc;
+            document.querySelector(DOMstrings.expensesTotal).textContent = '- ' + obj.totalExp;
+            if(obj.percentage > 0) {
+                document.querySelector(DOMstrings.expensesPercentage).textContent = obj.percentage + '%';
+            } else {
+                document.querySelector(DOMstrings.expensesPercentage).textContent = '---';
             }
-           
-        }, */
+        },
 
         getDOMstrings: function() {
             return DOMstrings;
@@ -204,7 +210,7 @@ var controller = (function(budgetCtrl, UICtrl) {
         var budget = budgetCtrl.getBudget();
         
         // 3. Display budget on the UI.
-        console.log(budget);
+        UICtrl.displayBudget(budget);
      }   
 
 
@@ -234,6 +240,12 @@ var controller = (function(budgetCtrl, UICtrl) {
     return {
         init: function() {
             setupEventListeners();
+            UICtrl.displayBudget({
+                budget: 0,
+                percentage: 0,
+                totalInc: 0,
+                totalExp: 0
+            })
             console.log('Application initialized');
         } 
     }
